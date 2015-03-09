@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Saatvik Shukla
 # Mon, March 9 2015
@@ -26,11 +26,32 @@ checkFiles ()
 decompile ()
 {
 	echo "Decompiling The SystemUI.apk"
-	./apktool/apktool if 'original_files/framework-res.apk'
-	./apktool/apktool d 'original_files/SystemUI.apk' -o 'output/SystemUI'
+	#./apktool/apktool if 'original_files/framework-res.apk'
+	./apktool/apktool d -f 'original_files/SystemUI.apk' -o 'output/SystemUI'
 }
 
+recompile ()
+{
+	if [ -d 'output/SystemUI' ]
+	then
+		./apktool/apktool b 'output/SystemUI' 'status_bar_recent_panel_item.xml'
+	fi
+}
 
+modify ()
+{
+	cd  output/SystemUI/res/layout 
+	line=`sed -n 2p 'status_bar_recent_panel.xml'`
+	echo $line
+	echo ""
+	line="$line android:rotationX="-10.0""
+	echo $line
+	line1=`sed '2 c\$line' 'status_bar_recent_panel.xml'`
+	echo $line1
+	cd ../../../..
+}
 
 checkFiles
 decompile
+modify
+#recompile
