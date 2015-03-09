@@ -26,8 +26,11 @@ checkFiles ()
 decompile ()
 {
 	echo "Decompiling The SystemUI.apk"
-	
+	./apktool/apktool if 'original_files/framework-res.apk'
+	./apktool/apktool d 'original_files/SystemUI.apk' -o 'output/SystemUI'
 }
 
 
+
 checkFiles
+decompile
