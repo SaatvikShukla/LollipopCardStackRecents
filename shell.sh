@@ -34,18 +34,26 @@ recompile ()
 {
 	if [ -d 'output/SystemUI' ]
 	then
-		./apktool/apktool b 'output/SystemUI' 'status_bar_recent_panel_item.xml'
+		./apktool/apktool b 'output/SystemUI' 'status_bar_recent_panel_item.xml' -o 'SystemUI.apk'
 	fi
 }
 
 modify ()
 {
-	cd  output/SystemUI/res/layout 
-	sed -i '2 s|$| android:rotationX="-10.0"|' "status_bar_recent_panel.xml"
-	cd ../../../..
+	if [ -e "$PWD/output/SystemUI/res/layout/status_bar_recent_panel_item.xml" ]
+	then
+		sed -i '2 s|$| android:rotationX="-10.0"|' output/SystemUI/res/layout/status_bar_recent_panel_item.xml #acc to thread
+	else
+		sed -i '2 s|$| android:rotationX="-10.0"|' output/SystemUI/res/layout/status_bar_recent_item.xml       #acc to Sony stock
+	fi
+	
+	if [ -e "$PWD/output/SystemUI/res/layout/status_bar_recent_panel.xml" ]
+	then
+		sed -i '2 s|$| android:rotationX="10.0"|' output/SystemUI/res/layout/status_bar_recent_panel.xml #acc to thread
+	fi
 }
 
 checkFiles
 decompile
 modify
-#recompile
+recompile
