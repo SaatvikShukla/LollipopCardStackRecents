@@ -41,13 +41,7 @@ recompile ()
 modify ()
 {
 	cd  output/SystemUI/res/layout 
-	line=`sed -n 2p 'status_bar_recent_panel.xml'`
-	echo $line
-	echo ""
-	line="$line android:rotationX="-10.0""
-	echo $line
-	line1=`sed '2 c\$line' 'status_bar_recent_panel.xml'`
-	echo $line1
+	sed -i '2 s|$| android:rotationX="-10.0"|' "status_bar_recent_panel.xml"
 	cd ../../../..
 }
 
